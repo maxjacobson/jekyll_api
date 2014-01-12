@@ -1,3 +1,5 @@
+Demo: <https://vimeo.com/83994673>
+
 # jekyll api
 
 I wish I had an API for updating my Jekyll blog, hosted on GitHub pages.
