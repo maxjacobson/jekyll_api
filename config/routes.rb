@@ -1,4 +1,8 @@
 JekyllApi::Application.routes.draw do
+  resources :blogs do
+    get :publish # TODO change to post request
+  end
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
