@@ -17,3 +17,6 @@ Here's the vision:
 * I can send HTTP POST requests to that endpoint with the data of a new blog post
 * The API will receive your request, pull the latest version of your blog, create a new file, commit that file, and push the changes
 * If I ever decide I want to revoke access, I can remove that bot as a collaborator or delete my account on the service
+
+Maybe there could be a web interface for creating these files as well, why not?
+

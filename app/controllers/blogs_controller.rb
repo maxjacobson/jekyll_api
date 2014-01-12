@@ -3,8 +3,9 @@ class BlogsController < ApplicationController
 
   def publish
     blog = Blog.find params[:blog_id]
-    blog.create_post params[:post]
-    render json: blog
+    raise Exception.new("Missing or incorrect auth token") unless params[:auth_token] == blog.auth_token
+    post = blog.create_post Post.new(params[:post])
+    render json: post
   end
 
   def index

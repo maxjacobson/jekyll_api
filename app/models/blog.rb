@@ -2,8 +2,17 @@ class Blog < ActiveRecord::Base
   validates_presence_of :repo, :email
   after_create :generate_auth_token
 
-  def create_post(post_text)
-    repo = self.clone_or_pull
+  def create_post(post)
+    repo = clone_repo()
+    File.open("#{path_to_repo}/_posts/#{Date.today.iso8601}-#{post.slug}.md", "w") do |f|
+      f.write post.text
+    end
+    #repo.config('user.name', 'Jekyll API bot')
+    #repo.config('user.email', 'jekyllapibot@hardscrabble.net')
+    repo.add
+    repo.commit "added #{post.slug} post"
+    repo.push
+    post
   end
 
   def path_to_repo
@@ -14,17 +23,17 @@ class Blog < ActiveRecord::Base
     Dir.exists? path_to_repo
   end
 
-  def clone_or_pull
-    if already_cloned?
-      repo = Git.open path_to_repo
-      repo.pull
-    else
-      repo = Git.clone repo, path_to_repo
-    end
-    repo
+  def clone_repo
+    remove_repo if already_cloned?
+    Git.clone repo, path_to_repo
   end
 
   private
+
+    def remove_repo
+      FileUtils.rm_rf path_to_repo
+    end
+
     def generate_auth_token
       while self.auth_token.nil?
         self.auth_token = SecureRandom.hex
